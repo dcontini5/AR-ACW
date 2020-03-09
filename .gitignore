@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+/AR-ACW/Debug
+\.vs
+AR-ACW/AR-ACW/Debug/
