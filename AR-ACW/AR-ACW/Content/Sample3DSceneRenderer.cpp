@@ -172,6 +172,12 @@ void Sample3DSceneRenderer::Render()
 		0
 		);
 
+	context->PSSetConstantBuffers(
+		0,
+		1,
+		m_constantBuffer.GetAddressOf()
+		);
+	
 	// Draw the objects.
 	context->DrawIndexed(
 		m_indexCount,

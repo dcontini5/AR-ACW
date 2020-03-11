@@ -1,4 +1,11 @@
 // Per-pixel color data passed through the pixel shader.
+cbuffer ModelViewProjectionConstantBuffer : register(b0)
+{
+    matrix model;
+    matrix view;
+    matrix projection;
+};
+
 struct PixelShaderInput
 {
     float4 pos : SV_POSITION;
@@ -53,7 +60,7 @@ static Sphere spherelist[2] =
 static Cube cube =
 {
   
-    float3(-1.5, -1, -5), float3(0.0, 1, 0.0), float3(0.5, 0.5, 0.5), float4(0, 1, 0, 1)
+    float3(-1.5, -1, -5), float3(1.0, 0.0, 0.0), float3(0.5, 0.5, 0.5), float4(1, 0, 0, 1)
     
 };
 
@@ -203,19 +210,27 @@ float4 iBox(Ray ray, in float4x4 txx, in float4x4 txi, in float3 rad)
 float checkers(in float3 p)
 {
     
-    float2 s = sign(frac(p * 0.5) - 0.5);
-    return 0.5 - 0.5 * s.x * s.y;
+    //float2 s = sign(frac(p * 0.5) - 0.5);
+    //return 0.5 - 0.5 * s.x * s.y;
+    
+    float chess = floor(p.x) + floor(p.y);
+    chess = frac(chess * 0.5);
+    
+    chess *= 2.f;
+    return chess;
     
 }
 
 float checkersGrad(in float2 uv, in float2 ddx, in float2 ddy)
 {
     
-    float2 w = max(abs(ddx), abs(ddy)) + 0.01;
+    float2 w = max(abs(ddx), abs(ddy)) + 0.04;
     float2 i = (frac(uv + 0.5 * w) - frac(uv - 0.5 * w)) / w;
     return 0.5 - 0.5 * i.x * i.y;
     
 }
+
+
 
 
 float3 NearestHit(Ray ray, out int hitobj, out bool anyhit, out float3 normal)
@@ -223,7 +238,7 @@ float3 NearestHit(Ray ray, out int hitobj, out bool anyhit, out float3 normal)
     
     //normal = float3(0, 0, 0);
     //float4x4 txi = (float4x4)1.0f;
-    float4x4 rot = rotationAxisAngle(cube.Rotatation, 0.0);
+    float4x4 rot = rotationAxisAngle(cube.Rotatation, 45.0);
     float4x4 tra = translate(cube.Centre);
     float4x4 txi = mul(rot, tra);
     float4x4 txx = inverse(txi);
@@ -287,14 +302,12 @@ float4 RayTracing(Ray ray)
     {
         
         
-        float2 px = (2.0 * (ray.UV + float2(1.0, 0.0)) - iRes.xy) / iRes.y;
-        float2 py = (2.0 * (ray.UV + float2(0.0, 1.0)) - iRes.xy) / iRes.y;
-        float3 rdx = Eye.xyz * normalize(float3(px, 2.5));
-        float3 rdy = Eye.xyz * normalize(float3(py, 2.5));
+        //float2 px = (2.0 * (ray.UV + float2(1.0, 0.0)) - iRes.xy) / iRes.y;
+        //float2 py = (2.0 * (ray.UV + float2(0.0, 1.0)) - iRes.xy) / iRes.y;
+        //float3 rdx = Eye.xyz * normalize(float3(px, 2.5));
+        //float3 rdy = Eye.xyz * normalize(float3(py, 2.5));
         
-        c += Shade(i, normal, ray.Direction, 1, 1);
-        c *= checkers(i*5.0);
-        //c *= checkersGrad(i.xz * 5.0, rdx.xz * 5.0, rdy.xz * 5.0);
+        c += Shade(i, normal, ray.Direction, 1, 1) * checkers(i * 5.0);
         
     }
     else
