@@ -17,50 +17,57 @@ struct Ray
     
     float3 Origin;
     float3 Direction;
-    float2 UV;
     
 };
 
-struct Sphere
-{
-    
-    float3 Centre;
-    float Radius;
-    float4 Color;
-    
-};
-
-struct Cube
+struct Object
 {
     
     float3 Centre;
     float3 Rotatation;
     float3 HalfWidth;
     float4 Color;
+    float Kd, Ks, Kr, shininess;
     
 };
+
+
+//struct Sphere
+//{
+    
+//    float3 Centre;
+//    float Radius;
+//    float4 Color;
+    
+//};
+
+//struct Cube
+//{
+    
+//    float3 Centre;
+//    float3 Rotatation;
+//    float3 HalfWidth;
+//    float4 Color;
+    
+//};
 
 #define IDENTITY_MATRIX float4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
 
-static float4 Eye = float4(0, 0, 5, 1); //eye position
+static float4 Eye = float4(0, 4, 15, 1); //eye position
 static float nearPlane = 1.0;
 static float farPlane = 1000.0;
 static float4 LightColor = float4(1, 1, 1, 1);
-static float3 LightPos = float3(10, 10, 10);
-static float4 backGroundColor = float4(0.36, 0.57, 0.91, 1.0);
-static float2 iRes = float2(1200, 900);
+static float3 LightPos = float3(0, 10, 0);
+static float4 backGroundColor = float4(0.1, 0.2, 0.3, 1.0);
+static float shininess = 40;
 
-static Sphere spherelist[2] =
+static Object objects[4] =
 {
-    float3(1, 1, 1), 1, float4(1, 1, 1, 1), 
-    float3(1, 1, 1), 1, float4(1, 1, 1, 1) 
     
-};
-
-static Cube cube =
-{
-  
-    float3(-1.5, -1, -5), float3(1.0, 0.0, 0.0), float3(0.5, 0.5, 0.5), float4(1, 0, 0, 1)
+    float3(1, 2.5, -10), float3(0.0, 0.0, 0.0), float3(0.5, 0.5, 0.5), float4(1, 0.4, 0, 1), 0.3, 0.5, 0.7, shininess, 
+    float3(-1, 2.25, -10), float3(0.0, 0.0, 0.0), float3(0.25, 0.25, 0.25), float4(0, 1, 0, 1), 0.5, 0.7, 0.4, shininess,
+    float3(0, 1, -10), float3(0.0, 1.0, 0.0), float3(1.5, 0.5, 1.5), float4(0.9, 0.9, 0.9, 1), 0.5, 0.3, 0.3, shininess,
+    float3(0, 0, 0), float3(0.0, 0.0, 0.0), float3(0, 0, 0), float4(0.6, 0.6, 0.6, 1), 0.5, 0.3, 0.3, shininess,
     
 };
 
@@ -74,50 +81,6 @@ float4x4 rotationAxisAngle(float3 v, float angle)
                         v.x * v.y * ic + s * v.z,   v.y * v.y * ic + c,          v.z * v.y * ic - s * v.x,   0.0,
                         v.x * v.z * ic - s * v.y,   v.y * v.z * ic + s * v.x,    v.z * v.z * ic + c,         0.0,
 			            0.0,                        0.0,                         0.0,                        1.0);
-    
-}
-
-
-float SphereIntersectRay(Sphere s, Ray ray, out bool hit)
-{
-    
-    float t;
-    float3 C = s.Centre - ray.Origin; //Hypotenuse
-    float A = dot(C, ray.Direction);
-    float B = dot(C, C) - A * A;
-    
-    //float radius = sqrt(s.radius);
-    float radius = sqrt(s.Radius);
-    
-    
-    if (B > radius * radius)
-    {
-        hit = false;
-        t = farPlane;
-        
-    }
-    else
-    {
-        
-        float dist = sqrt(radius * radius - B);
-        t = A - dist;
-        if (t < 0.0f) //max lenght of ray?
-        {
-            
-            hit = false;
-            
-        }
-        else
-        {
-            
-            hit = true;
-            
-            
-        }
-        
-    }
-    
-    return t;
     
 }
 
@@ -169,6 +132,59 @@ float4x4 translate(float3 pos)
 				     pos.x, pos.y, pos.z, 1.0);
 }
 
+float4 SphereIntersectRay(Object s, Ray ray)
+{
+    
+    float4 t;
+    float3 C = s.Centre - ray.Origin; //Hypotenuse
+    float A = dot(C, ray.Direction);
+    float B = dot(C, C) - A * A;
+    float radius = sqrt(s.HalfWidth.x);
+
+    if (B > radius * radius)
+    {
+        
+        t = (float4) -1.0;
+        
+    }
+    else
+    {
+        
+        float dist = sqrt(radius * radius - B);
+        t.x = A - dist;
+        if (t.x < 0.0f) 
+        {
+            
+           
+            t = (float4) -1.0;
+        }
+        else
+        {
+            
+            t.yzw = normalize((ray.Origin + ray.Direction * t.x) - s.Centre);
+        }
+        
+    }
+    
+    return t;
+    
+}
+
+float4 iPlane(Ray ray)
+{
+    
+    
+    float tp1 = (-0.5 - ray.Origin.y) / (ray.Direction.y);
+    if (tp1 > 0.0)
+    {
+        tp1 = min(farPlane, tp1);
+
+    }
+    
+    return float4(tp1, 0, 1, 0);
+    
+}
+
 //http://iquilezles.org/www/articles/boxfunctions/boxfunctions.htm
 //https://www.math.unl.edu/~gledder1/Math208/DirectionalSlope.pdf
 float4 iBox(Ray ray, in float4x4 txx, in float4x4 txi, in float3 rad)
@@ -176,9 +192,7 @@ float4 iBox(Ray ray, in float4x4 txx, in float4x4 txi, in float3 rad)
     // convert from ray to box space
    
     float3 rdd = mul(float4(ray.Direction, 0.0f), txx).xyz;
-    //float3 rdd = ray.Direction;
     float3 roo = mul(float4(ray.Origin, 1.0f), txx).xyz;
-    //float3 roo = ray.Origin;
 
 	// ray-box intersection in box space
     float3 m = 1.0 / rdd;
@@ -207,11 +221,8 @@ float4 iBox(Ray ray, in float4x4 txx, in float4x4 txi, in float3 rad)
 
 //http://iquilezles.org/www/articles/checkerfiltering/checkerfiltering.htm
 // checkers, in smooth xor form
-float checkers(in float3 p)
+float checkers(in float2 p)
 {
-    
-    //float2 s = sign(frac(p * 0.5) - 0.5);
-    //return 0.5 - 0.5 * s.x * s.y;
     
     float chess = floor(p.x) + floor(p.y);
     chess = frac(chess * 0.5);
@@ -231,29 +242,38 @@ float checkersGrad(in float2 uv, in float2 ddx, in float2 ddy)
 }
 
 
-
-
-float3 NearestHit(Ray ray, out int hitobj, out bool anyhit, out float3 normal)
+float3 NearestHit(Ray ray, out int hitobj, out bool anyhit, out float3 normal, in float4x4 txi, in float4x4 txx)
 {
-    
-    //normal = float3(0, 0, 0);
-    //float4x4 txi = (float4x4)1.0f;
-    float4x4 rot = rotationAxisAngle(cube.Rotatation, 45.0);
-    float4x4 tra = translate(cube.Centre);
-    float4x4 txi = mul(rot, tra);
-    float4x4 txx = inverse(txi);
-    
+   
     float mint = farPlane;
     hitobj = -1;
     anyhit = false;
-    float4 t = iBox(ray, txx, txi, float3(cube.HalfWidth));
     
-    if (t.x > 0.0 && t.x < mint)
+    float4 t;
+    
+    
+    for (uint i = 0; i < 4; i++)
     {
+        if(i == 3)
+            t = iPlane(ray);
+        else
+        {
+            if (i == 2)
+                t = iBox(ray, txx, txi, float3(objects[i].HalfWidth));
+            else
+                t = SphereIntersectRay(objects[i], ray);
             
-        mint = t.x;
-        normal = t.yzw;
-        anyhit = true;
+        }
+      
+        if (t.x > 0.0 && t.x < mint)
+        {
+            
+            hitobj = i;
+            mint = t.x;
+            normal = t.yzw;
+            anyhit = true;
+            
+        }
         
     }
     
@@ -276,14 +296,30 @@ float4 Phong(float3 normal, float3 lightDir, float3 viewDir, float shininess, fl
 float4 Shade(float3 hitPos, float3 normal, float3 viewDir, int hitobj, float lightIntensity)
 {
     float3 lightDir = normalize(LightPos - hitPos);
-    float4 diff = cube.Color;
-    float4 spec = cube.Color;
+    float4 diff = objects[hitobj].Color * objects[hitobj].Kd;
+    float4 spec = objects[hitobj].Color * objects[hitobj].Ks;
     
-    return LightColor * lightIntensity * Phong(normal, lightDir, viewDir, cube.Color.w, diff, spec);
+    Ray shadowray;
+    shadowray.Direction = lightDir;
+    shadowray.Origin = hitPos;
+    int shadowHit;
+    bool anyhit;
+    float4x4 rot = rotationAxisAngle(objects[2].Rotatation, 0.0);
+    float4x4 tra = translate(objects[2].Centre);
+    float4x4 txi = mul(rot, tra);
+    float4x4 txx = inverse(txi);
+    float3 normal1;
+    
+    float i = NearestHit(shadowray, shadowHit, anyhit, normal1, txi, txx);
+    
+    float4 light = LightColor * lightIntensity * Phong(normal, lightDir, viewDir, objects[hitobj].shininess, diff, spec);
+    
+    if(anyhit && shadowHit != hitobj)
+        light *= 0.6;
+    
+    return light;
     
 }
-
-
 
 float4 RayTracing(Ray ray)
 {
@@ -295,44 +331,67 @@ float4 RayTracing(Ray ray)
     float lightintensity = 1.0f;
     float3 normal;
     
+    float4x4 rot = rotationAxisAngle(objects[2].Rotatation, 0.0);
+    float4x4 tra = translate(objects[2].Centre);
+    float4x4 txi = mul(rot, tra);
+    float4x4 txx = inverse(txi);
     
-    float3 i = NearestHit(ray, hitobj, hit, normal); 
+    //float i = farPlane;
     
-    if (hit)
+    float3 i = NearestHit(ray, hitobj, hit, normal, txi, txx); 
+    
+    for (uint depth = 1; depth < 4; depth++)
     {
         
+        if (hit)
+        {
+            
+            if (hitobj == 3)
+            {
+                c += Shade(i, normal, ray.Direction, hitobj, lightintensity);
+                hit = false;
+            }
+            else
+            {
+                c += Shade(i, normal, ray.Direction, hitobj, lightintensity);
+            
+                if (hitobj == 2)
+                {
+                    float3 nor = mul(float4(normal, 0.0), txx).xyz;
+                    float2 xer = float2(0.f, 0.f);
         
-        //float2 px = (2.0 * (ray.UV + float2(1.0, 0.0)) - iRes.xy) / iRes.y;
-        //float2 py = (2.0 * (ray.UV + float2(0.0, 1.0)) - iRes.xy) / iRes.y;
-        //float3 rdx = Eye.xyz * normalize(float3(px, 2.5));
-        //float3 rdy = Eye.xyz * normalize(float3(py, 2.5));
+                    if (abs(nor.x) == 1)
+                        xer = i.yz;
         
-        c += Shade(i, normal, ray.Direction, 1, 1) * checkers(i * 5.0);
+                    if (abs(nor.y) == 1)
+                        xer = i.xz;
         
-    }
-    else
-    {
+                    if (abs(nor.z) == 1)
+                        xer = i.xy;
+                    c *= checkers(xer * 5.0);
+                
+                }
+            
+                lightintensity *= objects[hitobj].Kr;
+                ray.Origin = i;
+                ray.Direction = reflect(ray.Direction, normal);
+                i = NearestHit(ray, hitobj, hit, normal, txi, txx);
+                
+            }
+            
+            
+        }
+        else
+        {
         
-        c = backGroundColor;
+            c += backGroundColor / depth / depth;
+        
+        }
         
     }
     
+
     
-    //[unroll(10)]
-  //  for (uint depth = 1; depth < 3; depth++)
-  //  {
-  //      
-  //      if (hit)
-  //      {
-  //          
-  //          // n = getnormal;
-  //          //c = shade;
-  //          c = (flaot4) 1.0f;
-  //          
-  //      }
-  //      
-  //      
-  //  }
     
     return c;
 }
@@ -343,15 +402,13 @@ float4 main(PixelShaderInput input) : SV_TARGET
     
     Ray ray;
     
-    ray.UV = input.canvasXY;
     ray.Origin = Eye.xyz;
     float dist2Imageplane = 5.f;
     float3 viewDir = float3(input.canvasXY, -dist2Imageplane);
-    //viewDir = float3(0, 0, -dist2Imageplane);
     
     ray.Direction = normalize(viewDir);
+        
+    float4 color = RayTracing(ray);
     
-    
-    
-    return RayTracing(ray);
+    return color;
 }

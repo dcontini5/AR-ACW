@@ -91,5 +91,8 @@
     <FxCompile Include="Content\RayCastingVS.hlsl">
       <Filter>Content</Filter>
     </FxCompile>
+    <FxCompile Include="PixelShaderMT.hlsl">
+      <Filter>Content</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
