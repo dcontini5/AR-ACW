@@ -301,7 +301,7 @@ float4 Shade(float3 hitPos, float3 normal, float3 viewDir, int hitobj, float lig
     
     Ray shadowray;
     shadowray.Direction = lightDir;
-    shadowray.Origin = hitPos;
+    shadowray.Origin = hitPos + lightDir * 0.005;
     int shadowHit;
     bool anyhit;
     float4x4 rot = rotationAxisAngle(objects[2].Rotatation, 0.0);
