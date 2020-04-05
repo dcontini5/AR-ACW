@@ -94,5 +94,8 @@
     <FxCompile Include="PixelShaderMT.hlsl">
       <Filter>Content</Filter>
     </FxCompile>
+    <FxCompile Include="GeometryShader.hlsl">
+      <Filter>Content</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

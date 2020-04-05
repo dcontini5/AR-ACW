@@ -8,6 +8,8 @@ namespace AR_ACW
 		DirectX::XMFLOAT4X4 model;
 		DirectX::XMFLOAT4X4 view;
 		DirectX::XMFLOAT4X4 projection;
+		//float Time;
+		//DirectX::XMFLOAT3 Pos;
 	};
 
 	// Used to send per-vertex data to the vertex shader.
@@ -16,4 +18,6 @@ namespace AR_ACW
 		DirectX::XMFLOAT3 pos;
 		DirectX::XMFLOAT3 color;
 	};
+
+
 }

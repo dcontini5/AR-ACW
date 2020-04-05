@@ -4,6 +4,7 @@ cbuffer ModelViewProjectionConstantBuffer : register(b0)
     matrix model;
     matrix view;
     matrix projection;
+    float time;
 };
 
 struct PixelShaderInput

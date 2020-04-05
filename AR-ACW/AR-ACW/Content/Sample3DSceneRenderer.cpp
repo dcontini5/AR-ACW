@@ -1,7 +1,7 @@
-﻿#include "pch.h"
-#include "Sample3DSceneRenderer.h"
+﻿#include "Sample3DSceneRenderer.h"
 
 #include "..\Common\DirectXHelper.h"
+#include "pch.h"
 
 using namespace AR_ACW;
 
@@ -14,7 +14,8 @@ Sample3DSceneRenderer::Sample3DSceneRenderer(const std::shared_ptr<DX::DeviceRes
 	m_degreesPerSecond(45),
 	m_indexCount(0),
 	m_tracking(false),
-	m_deviceResources(deviceResources)
+	m_deviceResources(deviceResources),
+	_time(0.f)
 {
 	CreateDeviceDependentResources();
 	CreateWindowSizeDependentResources();
@@ -63,6 +64,13 @@ void Sample3DSceneRenderer::CreateWindowSizeDependentResources()
 	static const XMVECTORF32 up = { 0.0f, 1.0f, 0.0f, 0.0f };
 
 	XMStoreFloat4x4(&m_constantBufferData.view, XMMatrixTranspose(XMMatrixLookAtRH(eye, at, up)));
+
+	
+	D3D11_RASTERIZER_DESC rastDesc = CD3D11_RASTERIZER_DESC(D3D11_DEFAULT);
+	rastDesc.CullMode = D3D11_CULL_NONE;
+	m_deviceResources->GetD3DDevice()->CreateRasterizerState(&rastDesc,	m_rasterState.GetAddressOf());
+	
+	
 }
 
 // Called once per frame, rotates the cube and calculates the model and view matrices.
@@ -74,7 +82,12 @@ void Sample3DSceneRenderer::Update(DX::StepTimer const& timer)
 		float radiansPerSecond = XMConvertToRadians(m_degreesPerSecond);
 		double totalRotation = timer.GetTotalSeconds() * radiansPerSecond;
 		float radians = static_cast<float>(fmod(totalRotation, XM_2PI));
-
+		//float radians = 0;
+		//auto currtime = timer.GetTotalSeconds();
+		//_dt = currtime - _time;
+		//_time =  currtime;
+		_time = timer.GetTotalSeconds();
+		
 		Rotate(radians);
 	}
 }
@@ -117,12 +130,16 @@ void Sample3DSceneRenderer::Render()
 
 	auto context = m_deviceResources->GetD3DDeviceContext();
 
+	//m_constantBufferData.Time = _time;
+	//m_constantBufferData.Pos = XMFLOAT3(0, 0, 0);
+	
 	// Prepare the constant buffer to send it to the graphics device.
 	context->UpdateSubresource1(
 		m_constantBuffer.Get(),
 		0,
 		NULL,
 		&m_constantBufferData,
+		//&m_constantBufferData,
 		0,
 		0,
 		0
@@ -145,9 +162,12 @@ void Sample3DSceneRenderer::Render()
 		0
 		);
 
-	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	//context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	context->IASetInputLayout(m_inputLayout.Get());
+
+	context->RSSetState(m_rasterState.Get());
 
 	// Attach our vertex shader.
 	context->VSSetShader(
@@ -165,6 +185,21 @@ void Sample3DSceneRenderer::Render()
 		nullptr
 		);
 
+	context->GSSetShader(
+		m_geometryShader.Get(),
+		nullptr,
+		0
+		);
+	
+	context->GSSetConstantBuffers1(
+		0,
+		1,
+		m_constantBuffer.GetAddressOf(),
+		nullptr,
+		nullptr
+	);
+	
+	
 	// Attach our pixel shader.
 	context->PSSetShader(
 		m_pixelShader.Get(),
@@ -189,11 +224,57 @@ void Sample3DSceneRenderer::Render()
 void Sample3DSceneRenderer::CreateDeviceDependentResources()
 {
 	// Load shaders asynchronously.
-	//auto loadVSTask = DX::ReadDataAsync(L"SampleVertexShader.cso");
-	//auto loadPSTask = DX::ReadDataAsync(L"SamplePixelShader.cso");
-	auto loadVSTask = DX::ReadDataAsync(L"RayCastingVS.cso");
-	auto loadPSTask = DX::ReadDataAsync(L"RayCastingPS.cso");
+	auto loadVSTask = DX::ReadDataAsync(L"SampleVertexShader.cso");
+	auto loadPSTask = DX::ReadDataAsync(L"SamplePixelShader.cso");
+	auto loadGSTask = DX::ReadDataAsync(L"GeometryShader.cso");
+	//auto loadVSTask = DX::ReadDataAsync(L"RayCastingVS.cso");
+	//auto loadPSTask = DX::ReadDataAsync(L"RayCastingPS.cso");
+	//auto loadTDTask = DX::ReadDataAsync(L"soldier.dds");
 
+	//auto constructSubresourceTask = loadTDTask.then([this](const std::vector<byte>& textureData)
+	//{
+	//	D3D11_SUBRESOURCE_DATA textureSubData = { 0 };
+	//	textureSubData.pSysMem = textureData.data();
+
+	//	textureSubData.SysMemPitch = 1024;
+
+	//	textureSubData.SysMemSlicePitch = 0;
+
+	//	D3D11_TEXTURE2D_DESC textureDesc = { 0 };
+	//	textureDesc.Width = 555;
+	//	textureDesc.Height = 555;
+	//	textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	//	textureDesc.Usage = D3D11_USAGE_DEFAULT;
+	//	textureDesc.CPUAccessFlags = 0;
+	//	textureDesc.MiscFlags = 0;
+
+	//	textureDesc.MipLevels = 1;
+
+	//	textureDesc.ArraySize = 1;
+
+	//	textureDesc.SampleDesc.Count = 1;
+	//	textureDesc.SampleDesc.Quality = 0;
+
+
+	//	textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+
+	//	DX::ThrowIfFailed(
+
+	//		m_deviceResources->GetD3DDevice()->CreateTexture2D(
+	//			&textureDesc,
+	//			&textureSubData,
+	//			&m_texture
+	//		)
+
+	//	);
+	//	
+	//	
+	//	
+	//	
+	//});
+	//
+
+	//
 	// After the vertex shader file is loaded, create the shader and input layout.
 	auto createVSTask = loadVSTask.then([this](const std::vector<byte>& fileData) {
 		DX::ThrowIfFailed(
@@ -220,6 +301,7 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 				&m_inputLayout
 				)
 			);
+
 	});
 
 	// After the pixel shader file is loaded, create the shader and constant buffer.
@@ -240,25 +322,42 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 				nullptr,
 				&m_constantBuffer
 				)
-			);
+		);
 	});
 
+	auto createGSTask = loadGSTask.then([this](const std::vector<byte>& fileData)
+	{
+
+		DX::ThrowIfFailed(
+			m_deviceResources->GetD3DDevice()->CreateGeometryShader(
+				&fileData[0],
+				fileData.size(),
+				nullptr,
+				&m_geometryShader
+			)
+		);
+				
+	});
+
+	
 	// Once both shaders are loaded, create the mesh.
 	auto createCubeTask = (createPSTask && createVSTask).then([this] () {
 
 		// Load mesh vertices. Each vertex has a position and a color.
 		static const VertexPositionColor cubeVertices[] = 
 		{
-			{XMFLOAT3(-0.5f, -0.5f, -0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f)},
-			{XMFLOAT3(-0.5f, -0.5f,  0.5f), XMFLOAT3(0.0f, 0.0f, 1.0f)},
-			{XMFLOAT3(-0.5f,  0.5f, -0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f)},
-			{XMFLOAT3(-0.5f,  0.5f,  0.5f), XMFLOAT3(0.0f, 1.0f, 1.0f)},
-			{XMFLOAT3( 0.5f, -0.5f, -0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f)},
-			{XMFLOAT3( 0.5f, -0.5f,  0.5f), XMFLOAT3(1.0f, 0.0f, 1.0f)},
-			{XMFLOAT3( 0.5f,  0.5f, -0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f)},
-			{XMFLOAT3( 0.5f,  0.5f,  0.5f), XMFLOAT3(1.0f, 1.0f, 1.0f)},
+			//{XMFLOAT3(-0.5f, -0.5f, -0.5f), XMFLOAT3(0.0f, 0.0f, 0.0f)},
+			//{XMFLOAT3(-0.5f, -0.5f,  0.5f), XMFLOAT3(0.0f, 0.0f, 1.0f)},
+			//{XMFLOAT3(-0.5f,  0.5f, -0.5f), XMFLOAT3(0.0f, 1.0f, 0.0f)},
+			//{XMFLOAT3(-0.5f,  0.5f,  0.5f), XMFLOAT3(0.0f, 1.0f, 1.0f)},
+			//{XMFLOAT3( 0.5f, -0.5f, -0.5f), XMFLOAT3(1.0f, 0.0f, 0.0f)},
+			//{XMFLOAT3( 0.5f, -0.5f,  0.5f), XMFLOAT3(1.0f, 0.0f, 1.0f)},
+			//{XMFLOAT3( 0.5f,  0.5f, -0.5f), XMFLOAT3(1.0f, 1.0f, 0.0f)},
+			//{XMFLOAT3( 0.5f,  0.5f,  0.5f), XMFLOAT3(1.0f, 1.0f, 1.0f)},
+			{XMFLOAT3(0.0f,  0.0f,  0.0f), XMFLOAT3(1.0f, 1.0f, 1.0f)},
 		};
 
+		
 		D3D11_SUBRESOURCE_DATA vertexBufferData = {0};
 		vertexBufferData.pSysMem = cubeVertices;
 		vertexBufferData.SysMemPitch = 0;
@@ -279,7 +378,7 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 		// first triangle of this mesh.
 		static const unsigned short cubeIndices [] =
 		{
-			//0,2,1, // -x
+			0,//2,1, // -x
 			//1,2,3,
 
 			//4,5,6, // +x
@@ -294,9 +393,11 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 			//0,4,6, // -z
 			//0,6,2,
 			//
-			1,3,7, // +z
-			1,7,5,
+			//1,3,7, // +z
+			//1,7,5,
 		};
+
+	
 
 		m_indexCount = ARRAYSIZE(cubeIndices);
 
@@ -318,6 +419,10 @@ void Sample3DSceneRenderer::CreateDeviceDependentResources()
 	createCubeTask.then([this] () {
 		m_loadingComplete = true;
 	});
+
+
+
+	
 }
 
 void Sample3DSceneRenderer::ReleaseDeviceDependentResources()

@@ -30,9 +30,5 @@ PixelShaderInput main(VertexShaderInput input)
     
     output.canvasXY = sign(input.pos.xy) * float2(aspectRatio, 1.0f);
     
-	// Pass the color through without modification.
-    //output.color = float3(0.36, 0.57, 0.91);
-    //output.color = float3(1, 0, 0.0);
-
-	return output;
+    return output;
 }
