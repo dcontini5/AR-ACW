@@ -1,0 +1,8 @@
+﻿  Sample3DSceneRenderer.cpp
+e:\projects\new folder\ar_acw\ar_acw\content\sample3dscenerenderer.cpp(130): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+e:\projects\new folder\ar_acw\ar_acw\content\sample3dscenerenderer.cpp(131): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+e:\projects\new folder\ar_acw\ar_acw\content\sample3dscenerenderer.cpp(371): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+e:\projects\new folder\ar_acw\ar_acw\content\sample3dscenerenderer.cpp(440): warning C4305: 'argument': truncation from 'double' to 'float'
+e:\projects\new folder\ar_acw\ar_acw\content\sample3dscenerenderer.cpp(440): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+e:\projects\new folder\ar_acw\ar_acw\content\sample3dscenerenderer.cpp(750): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  AR_ACW.vcxproj -> E:\Projects\New folder\AR_ACW\Debug\AR_ACW\AR_ACW.exe

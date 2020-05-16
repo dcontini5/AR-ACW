@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>DESKTOP-OAOCB2V</Machine>
+    <WindowsUser>Quontini</WindowsUser>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetOsVersion>10.0</TargetOsVersion>
+    <TargetOsDescription>Windows 10.0</TargetOsDescription>
+    <SolutionConfiguration>Release|Win32</SolutionConfiguration>
+    <PackageArchitecture>x86</PackageArchitecture>
+    <PackageIdentityName>79fc84ba-3b63-48a6-bada-299e0e72e776</PackageIdentityName>
+    <PackageIdentityPublisher>CN=Quontini</PackageIdentityPublisher>
+    <IntermediateOutputPath>E:\Projects\AR-ACW\AR-ACW\AR_ACW\Release\</IntermediateOutputPath>
+    <RemoteDeploymentType>CopyToDevice</RemoteDeploymentType>
+    <PackageRegistrationPath>
+    </PackageRegistrationPath>
+    <RemoveNonLayoutFiles>false</RemoveNonLayoutFiles>
+    <DeployOptionalPackages>false</DeployOptionalPackages>
+    <WindowsSdkPath>C:\Program Files %28x86%29\Windows Kits\10\</WindowsSdkPath>
+    <LayoutDir>E:\Projects\AR-ACW\AR-ACW\Release\AR_ACW\AppX</LayoutDir>
+    <RegisteredManifestChecksum>BCB5750038C237167C5ED87AC9CC5115B5671C316B44190F0BE8E3E50AB25E4D</RegisteredManifestChecksum>
+    <RegisteredPackageMoniker>79fc84ba-3b63-48a6-bada-299e0e72e776_1.0.0.0_x86__758kjjqtczw1y</RegisteredPackageMoniker>
+    <RegisteredUserModeAppID>79fc84ba-3b63-48a6-bada-299e0e72e776_758kjjqtczw1y!App</RegisteredUserModeAppID>
+    <RegisteredPackageID>79fc84ba-3b63-48a6-bada-299e0e72e776</RegisteredPackageID>
+    <RegisteredPackagePublisher>CN=Quontini</RegisteredPackagePublisher>
+    <RegisteredVersion>1.0.0.0</RegisteredVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="E:\Projects\AR-ACW\AR-ACW\Release\AR_ACW\ilc\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2020-05-16T16:10:57.599</Modified>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagedFile Include="E:\Projects\AR-ACW\AR-ACW\Release\AR_ACW\ilc\AR_ACW.exe">
+      <PackagePath>AR_ACW.exe</PackagePath>
+      <Modified>2020-05-16T16:13:04.359</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\AR-ACW\AR-ACW\Release\AR_ACW\ilc\AR_ACW.pdb">
+      <PackagePath>AR_ACW.pdb</PackagePath>
+      <Modified>2020-05-16T16:13:04.399</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\AR-ACW\AR-ACW\Release\AR_ACW\ilc\AR_ACW.winmd">
+      <PackagePath>AR_ACW.winmd</PackagePath>
+      <Modified>2020-05-16T16:10:57.848</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\AR-ACW\AR-ACW\Release\AR_ACW\ilc\Assets\LockScreenLogo.scale-200.png">
+      <PackagePath>Assets\LockScreenLogo.scale-200.png</PackagePath>
+      <Modified>2020-05-16T16:10:52.182</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\AR-ACW\AR-ACW\Release\AR_ACW\ilc\Assets\SplashScreen.scale-200.png">
+      <PackagePath>Assets\SplashScreen.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2020-05-16T16:10:52.202</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\AR-ACW\AR-ACW\Release\AR_ACW\ilc\Assets\Square150x150Logo.scale-200.png">
+      <PackagePath>Assets\Square150x150Logo.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2020-05-16T16:10:52.223</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\AR-ACW\AR-ACW\Release\AR_ACW\ilc\Assets\Square44x44Logo.scale-200.png">
+      <PackagePath>Assets\Square44x44Logo.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2020-05-16T16:10:52.242</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\AR-ACW\AR-ACW\Release\AR_ACW\ilc\Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+      <PackagePath>Assets\Square44x44Logo.targetsize-24_altform-unplated.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2020-05-16T16:10:52.262</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\AR-ACW\AR-ACW\Release\AR_ACW\ilc\Assets\StoreLogo.png">
+      <PackagePath>Assets\StoreLogo.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2020-05-16T16:10:52.283</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\AR-ACW\AR-ACW\Release\AR_ACW\ilc\Assets\Wide310x150Logo.scale-200.png">
+      <PackagePath>Assets\Wide310x150Logo.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2020-05-16T16:10:52.302</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\AR-ACW\AR-ACW\Release\AR_ACW\ilc\GeometryShader.cso">
+      <PackagePath>GeometryShader.cso</PackagePath>
+      <Modified>2020-05-16T16:12:45.302</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\AR-ACW\AR-ACW\Release\AR_ACW\ilc\GeometryShaderCloud.cso">
+      <PackagePath>GeometryShaderCloud.cso</PackagePath>
+      <Modified>2020-05-16T16:12:45.420</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\AR-ACW\AR-ACW\Release\AR_ACW\ilc\GeometryShaderFlag.cso">
+      <PackagePath>GeometryShaderFlag.cso</PackagePath>
+      <Modified>2020-05-16T16:12:45.549</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\AR-ACW\AR-ACW\Release\AR_ACW\ilc\PixelShaderFlag.cso">
+      <PackagePath>PixelShaderFlag.cso</PackagePath>
+      <Modified>2020-05-16T16:12:45.656</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\AR-ACW\AR-ACW\Release\AR_ACW\ilc\RayCastingPS.cso">
+      <PackagePath>RayCastingPS.cso</PackagePath>
+      <Modified>2020-05-16T16:12:52.867</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\AR-ACW\AR-ACW\Release\AR_ACW\ilc\RayCastingVS.cso">
+      <PackagePath>RayCastingVS.cso</PackagePath>
+      <Modified>2020-05-16T16:12:52.991</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\AR-ACW\AR-ACW\Release\AR_ACW\ilc\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+      <Modified>2020-05-16T16:10:57.960</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\AR-ACW\AR-ACW\Release\AR_ACW\ilc\SamplePixelShader.cso">
+      <PackagePath>SamplePixelShader.cso</PackagePath>
+      <Modified>2020-05-16T16:12:53.113</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Projects\AR-ACW\AR-ACW\Release\AR_ACW\ilc\SampleVertexShader.cso">
+      <PackagePath>SampleVertexShader.cso</PackagePath>
+      <Modified>2020-05-16T16:12:53.233</Modified>
+    </AppxPackagedFile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\">
+      <Name>Microsoft.VCLibs.140.00</Name>
+      <Version>14.0.26706.0</Version>
+      <Architecture>ARM</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.140.00, MinVersion = 14.0.26706.0, Publisher = %27CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US%27</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\.\AppX\Retail\ARM\Microsoft.VCLibs.ARM.14.00.appx</AppxLocation>
+      <MoreInfo>
+      </MoreInfo>
+    </ResolvedSDKReference>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\">
+      <Name>Microsoft.VCLibs.140.00</Name>
+      <Version>14.0.26706.0</Version>
+      <Architecture>ARM64</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.140.00, MinVersion = 14.0.26706.0, Publisher = %27CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US%27</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\.\AppX\Retail\ARM64\Microsoft.VCLibs.ARM64.14.00.appx</AppxLocation>
+      <MoreInfo>
+      </MoreInfo>
+    </ResolvedSDKReference>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\">
+      <Name>Microsoft.VCLibs.140.00</Name>
+      <Version>14.0.26706.0</Version>
+      <Architecture>x64</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.140.00, MinVersion = 14.0.26706.0, Publisher = %27CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US%27</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\.\AppX\Retail\x64\Microsoft.VCLibs.x64.14.00.appx</AppxLocation>
+      <MoreInfo>
+      </MoreInfo>
+    </ResolvedSDKReference>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\">
+      <Name>Microsoft.VCLibs.140.00</Name>
+      <Version>14.0.26706.0</Version>
+      <Architecture>x86</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.140.00, MinVersion = 14.0.26706.0, Publisher = %27CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US%27</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\.\AppX\Retail\x86\Microsoft.VCLibs.x86.14.00.appx</AppxLocation>
+      <MoreInfo>
+      </MoreInfo>
+    </ResolvedSDKReference>
+  </ItemGroup>
+</Project>
